@@ -53,6 +53,4 @@ The notebook expects a zipped CSV dataset (`test.csv` inside a `.zip` file) with
 
 
 
-## License
 
-This project is open source and available under the [MIT License](LICENSE).
