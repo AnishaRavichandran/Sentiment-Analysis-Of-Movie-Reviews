@@ -142,72 +142,12 @@ The model performs consistently on both classes, with no strong bias towards eit
 
 ---
 
-## 🔮 Inference
-
-Once the model and tokenizer are saved, you can predict the sentiment of a new review like this:
-
-```python
-import re
-import numpy as np
-from nltk.corpus import stopwords
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-
-labels = {0: "Positive", 1: "Negative", 2: "Neutral"}
-stop_words = set(stopwords.words("english"))
-
-def preprocess(text):
-    text = text.lower()
-    text = re.sub(r"[^\w\s]", "", text)
-    return " ".join(w for w in text.split() if w not in stop_words)
-
-def predict_sentiment(review, model, tokenizer, max_len):
-    cleaned = preprocess(review)
-    seq = tokenizer.texts_to_sequences([cleaned])
-    padded = pad_sequences(seq, maxlen=max_len, padding="post")
-    probs = model.predict(padded)
-    return labels[int(np.argmax(probs))], float(np.max(probs))
-
-# Example
-review = "An absolutely brilliant movie with a gripping story and great acting!"
-sentiment, confidence = predict_sentiment(review, best_model, tokenizer, train_texts.shape[1])
-print(sentiment, f"({confidence:.2%})")
-```
-
-> `max_len` must be the same padded length used during training (`train_texts.shape[1]`).
-
----
-
 ## 🚀 Future Enhancements
 
-- Use **pre-trained embeddings** (GloVe, Word2Vec) or **transformer models** (BERT, DistilBERT) for higher accuracy
-- Add a true **neutral** class and support finer-grained ratings
-- Run **more tuning trials** and increase the vocabulary size
-- Add **attention layers** to improve interpretability
-- Handle **sarcasm and negation** more effectively
-- Save the model and tokenizer, then deploy as a **Flask / FastAPI / Streamlit** web app
+- Use **transformer models** (BERT, DistilBERT) for higher accuracy
 - Add **explainability** (LIME / SHAP) to show which words drove each prediction
 - Extend to **multilingual** reviews
 
 ---
 
-## ▶️ How to Run
 
-1. Clone the repository
-   ```bash
-   git clone <your-repo-url>
-   cd <your-repo-folder>
-   ```
-2. Install dependencies
-   ```bash
-   pip install tensorflow keras-tuner nltk scikit-learn numpy
-   ```
-3. Download the Kaggle Movie Reviews dataset and place it as `MovieReviewsData.csv`
-4. Open `SA_Movie_Reviews.ipynb` in Google Colab or Jupyter and run all cells
-
----
-
-## 👤 Author
-
-**Your Name** – [GitHub](https://github.com/your-username) | [LinkedIn](https://linkedin.com/in/your-profile)
-
-⭐ If you found this project useful, please consider giving it a star!
